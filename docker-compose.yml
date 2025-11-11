@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mlops-app:
+    build: .
+    container_name: mlops-flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_DEBUG=False
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount best_model để có thể cập nhật mà không cần rebuild
+      - ./best_model:/app/best_model:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+

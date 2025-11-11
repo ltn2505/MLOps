@@ -76,5 +76,7 @@ def health():
 if __name__ == '__main__':
     if model is None:
         print("Canh bao: Mo hinh chua duoc tai. Ung dung co the khong hoat dong dung.")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Sử dụng biến môi trường để kiểm soát debug mode
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)
 

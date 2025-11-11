@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# MLflow (không cần trong Docker image, sẽ được tạo khi chạy)
+mlruns/
+mlflow.db
+mlartifacts/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (optional - có thể giữ lại)
+# *.md
+
+# Scripts
+*.ps1
+*.sh
+
+# Logs
+*.log
+

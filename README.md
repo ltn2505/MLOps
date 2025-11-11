@@ -111,6 +111,48 @@ Health check endpoint
 - **Hyperparameters tuned**: n_estimators (50, 100, 200)
 - **Best model**: Được lưu trong `best_model/` với accuracy cao nhất
 
+## 🐳 Docker
+
+### Build và chạy với Docker:
+
+```bash
+# Build image
+docker build -t mlops-app:latest .
+
+# Chạy container
+docker run -d -p 5000:5000 --name mlops-app mlops-app:latest
+```
+
+### Hoặc sử dụng docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+Xem chi tiết trong [DOCKER.md](DOCKER.md)
+
+## 🔄 CI/CD với GitHub Actions
+
+Dự án được cấu hình với **GitHub Actions** để tự động build Docker image mỗi khi push code lên nhánh `main`.
+
+### Workflow tự động:
+
+1. ✅ **Trigger**: Mỗi khi push lên nhánh `main`
+2. ✅ **Build**: Tự động build Docker image
+3. ✅ **Push**: Upload image lên GitHub Container Registry (ghcr.io)
+
+### Xem Docker image:
+
+- **Registry**: https://github.com/ltn2505/MLOps/pkgs/container/mlops
+- **Pull image**: `docker pull ghcr.io/ltn2505/mlops:latest`
+
+### Sử dụng image từ registry:
+
+```bash
+docker pull ghcr.io/ltn2505/mlops:latest
+docker run -d -p 5000:5000 --name mlops-app ghcr.io/ltn2505/mlops:latest
+```
+
 ## Tính năng
 
 - ✅ Tạo dữ liệu với make_classification
@@ -120,10 +162,13 @@ Health check endpoint
 - ✅ Flask web application với giao diện đẹp
 - ✅ API endpoint để dự đoán
 - ✅ Hiển thị xác suất dự đoán
+- ✅ **Docker containerization**
+- ✅ **CI/CD với GitHub Actions** (tự động build Docker image)
 
 ## Lưu ý
 
 - Đảm bảo đã chạy `train.py` và `save_best_model.py` trước khi chạy `app.py`
 - Mô hình sẽ được load tự động khi khởi động ứng dụng
-- Ứng dụng chạy ở chế độ debug mode (development only)
+- Docker image được build tự động mỗi khi push lên `main`
+- Xem [DOCKER.md](DOCKER.md) để biết thêm chi tiết về Docker
 
