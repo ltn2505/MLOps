@@ -2,12 +2,6 @@
 
 Dự án MLOps sử dụng MLflow để quản lý và triển khai mô hình phân loại.
 
-## 🔗 Repository
-
-**GitLab**: [MLOps](https://gitlab.com/YOUR_USERNAME/MLOps) (Public)
-
-> ⚠️ Thay `YOUR_USERNAME` bằng username GitLab của bạn sau khi setup
-
 ## Cấu trúc dự án
 
 ```
@@ -127,33 +121,9 @@ Health check endpoint
 - ✅ API endpoint để dự đoán
 - ✅ Hiển thị xác suất dự đoán
 
-## 📦 Git & GitLab
-
-### Đồng bộ với GitLab
-
-1. **Tạo repository trên GitLab**:
-   - Tên: `MLOps`
-   - Visibility: Public
-   - Không khởi tạo với README
-
-2. **Chạy script setup** (PowerShell):
-   ```powershell
-   .\setup_gitlab.ps1
-   ```
-
-   Hoặc thủ công:
-   ```bash
-   git remote add origin https://gitlab.com/YOUR_USERNAME/MLOps.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-Xem chi tiết trong `GITLAB_SETUP.md`
-
 ## Lưu ý
 
 - Đảm bảo đã chạy `train.py` và `save_best_model.py` trước khi chạy `app.py`
 - Mô hình sẽ được load tự động khi khởi động ứng dụng
 - Ứng dụng chạy ở chế độ debug mode (development only)
-- File `.gitignore` đã được cấu hình để loại trừ `venv/`, `mlruns/`, và các file không cần thiết
 

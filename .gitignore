@@ -27,6 +27,11 @@ ENV/
 env.bak/
 venv.bak/
 
+# MLflow
+mlruns/
+mlflow.db
+mlartifacts/
+
 # IDE
 .vscode/
 .idea/
@@ -35,17 +40,8 @@ venv.bak/
 *~
 .DS_Store
 
-# MLflow
-mlruns/
-*.db
-mlflow.db
-
-# Model files (có thể quá lớn, comment nếu muốn commit)
-# best_model/
-# *.pkl
-
-# Data files (có thể quá lớn)
-# data.csv
+# Jupyter Notebook
+.ipynb_checkpoints
 
 # Environment variables
 .env
@@ -57,4 +53,15 @@ mlflow.db
 # OS
 Thumbs.db
 .DS_Store
+
+# Model files (optional - uncomment if you don't want to commit models)
+# best_model/
+# *.pkl
+# *.h5
+# *.pt
+
+# Data files (optional - uncomment if data is too large)
+# data.csv
+# *.csv
+# *.parquet
 
