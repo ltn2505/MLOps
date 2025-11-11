@@ -2,6 +2,8 @@
 
 Dự án MLOps sử dụng MLflow để quản lý và triển khai mô hình phân loại.
 
+> **CI/CD**: Tự động build Docker image mỗi khi push lên nhánh `main` 🚀
+
 ## Cấu trúc dự án
 
 ```
