@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# MLflow
+mlruns/
+*.db
+mlflow.db
+
+# Model files (có thể quá lớn, comment nếu muốn commit)
+# best_model/
+# *.pkl
+
+# Data files (có thể quá lớn)
+# data.csv
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+

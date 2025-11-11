@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLflow Classification App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .result h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .prediction {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .probability {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 MLflow Classification App</h1>
+        <p class="subtitle">Sử dụng mô hình tốt nhất để dự đoán phân loại</p>
+        
+        <form id="predictionForm">
+            <div class="features-grid">
+                <div class="form-group">
+                    <label for="feature_0">Feature 0:</label>
+                    <input type="number" step="any" id="feature_0" name="feature_0" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_1">Feature 1:</label>
+                    <input type="number" step="any" id="feature_1" name="feature_1" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_2">Feature 2:</label>
+                    <input type="number" step="any" id="feature_2" name="feature_2" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_3">Feature 3:</label>
+                    <input type="number" step="any" id="feature_3" name="feature_3" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_4">Feature 4:</label>
+                    <input type="number" step="any" id="feature_4" name="feature_4" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_5">Feature 5:</label>
+                    <input type="number" step="any" id="feature_5" name="feature_5" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_6">Feature 6:</label>
+                    <input type="number" step="any" id="feature_6" name="feature_6" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_7">Feature 7:</label>
+                    <input type="number" step="any" id="feature_7" name="feature_7" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_8">Feature 8:</label>
+                    <input type="number" step="any" id="feature_8" name="feature_8" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature_9">Feature 9:</label>
+                    <input type="number" step="any" id="feature_9" name="feature_9" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn" id="submitBtn">Dự đoán</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Đang xử lý...</p>
+        </div>
+        
+        <div class="result" id="result"></div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('predictionForm');
+        const resultDiv = document.getElementById('result');
+        const loadingDiv = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Lấy mẫu dữ liệu từ dữ liệu training (có thể thay đổi)
+        function fillSampleData() {
+            const sampleFeatures = [
+                1.125, 1.178, 0.494, 0.791, -0.614,
+                1.347, 1.420, 1.357, 0.966, -1.981
+            ];
+            
+            for (let i = 0; i < 10; i++) {
+                document.getElementById(`feature_${i}`).value = sampleFeatures[i];
+            }
+        }
+        
+        // Thêm nút để điền dữ liệu mẫu
+        const sampleBtn = document.createElement('button');
+        sampleBtn.type = 'button';
+        sampleBtn.className = 'btn';
+        sampleBtn.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+        sampleBtn.style.marginTop = '10px';
+        sampleBtn.textContent = 'Điền dữ liệu mẫu';
+        sampleBtn.onclick = fillSampleData;
+        form.appendChild(sampleBtn);
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Ẩn kết quả cũ, hiện loading
+            resultDiv.classList.remove('show');
+            loadingDiv.classList.add('show');
+            submitBtn.disabled = true;
+            
+            // Lấy dữ liệu từ form
+            const formData = new FormData(form);
+            const data = {};
+            for (let i = 0; i < 10; i++) {
+                data[`feature_${i}`] = parseFloat(formData.get(`feature_${i}`));
+            }
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Ẩn loading
+                loadingDiv.classList.remove('show');
+                submitBtn.disabled = false;
+                
+                if (response.ok) {
+                    // Hiển thị kết quả
+                    resultDiv.className = 'result success show';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Kết quả dự đoán:</h3>
+                        <div class="prediction">
+                            Lớp dự đoán: <span style="color: #667eea;">${result.prediction}</span>
+                        </div>
+                        <div class="probability">
+                            <strong>Xác suất:</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${result.probability_class_0 * 100}%">
+                                    Lớp 0: ${(result.probability_class_0 * 100).toFixed(2)}%
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${result.probability_class_1 * 100}%">
+                                    Lớp 1: ${(result.probability_class_1 * 100).toFixed(2)}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Hiển thị lỗi
+                    resultDiv.className = 'result error show';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Lỗi:</h3>
+                        <p>${result.error || 'Có lỗi xảy ra khi dự đoán'}</p>
+                    `;
+                }
+            } catch (error) {
+                loadingDiv.classList.remove('show');
+                submitBtn.disabled = false;
+                resultDiv.className = 'result error show';
+                resultDiv.innerHTML = `
+                    <h3>❌ Lỗi:</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
+
