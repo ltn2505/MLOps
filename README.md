@@ -135,20 +135,31 @@ Xem chi tiết trong [DOCKER.md](DOCKER.md)
 
 ## 🔄 CI/CD với GitHub Actions
 
-Dự án được cấu hình với **GitHub Actions** để tự động build Docker image mỗi khi push code lên nhánh `main`.
+Dự án được cấu hình với **GitHub Actions** để tự động build và push Docker image mỗi khi push code lên nhánh `main`.
 
 ### Workflow tự động:
 
 1. ✅ **Trigger**: Mỗi khi push lên nhánh `main`
 2. ✅ **Build**: Tự động build Docker image
-3. ✅ **Push**: Upload image lên GitHub Container Registry (ghcr.io)
+3. ✅ **Push**: Upload image lên **Docker Hub** và GitHub Container Registry
 
-### Xem Docker image:
+### 🐳 Pull và chạy từ Docker Hub (Khuyến nghị):
 
-- **Registry**: https://github.com/ltn2505/MLOps/pkgs/container/mlops
-- **Pull image**: `docker pull ghcr.io/ltn2505/mlops:latest`
+```bash
+# Pull image từ Docker Hub
+docker pull YOUR_USERNAME/mlops:latest
 
-### Sử dụng image từ registry:
+# Chạy container
+docker run -d -p 5000:5000 --name mlops-app YOUR_USERNAME/mlops:latest
+```
+
+**Lưu ý**: Thay `YOUR_USERNAME` bằng username Docker Hub của bạn.
+
+### Cấu hình Docker Hub:
+
+Xem hướng dẫn chi tiết trong [DOCKER_HUB_SETUP.md](DOCKER_HUB_SETUP.md)
+
+### Hoặc pull từ GitHub Container Registry:
 
 ```bash
 docker pull ghcr.io/ltn2505/mlops:latest
@@ -172,5 +183,7 @@ docker run -d -p 5000:5000 --name mlops-app ghcr.io/ltn2505/mlops:latest
 - Đảm bảo đã chạy `train.py` và `save_best_model.py` trước khi chạy `app.py`
 - Mô hình sẽ được load tự động khi khởi động ứng dụng
 - Docker image được build tự động mỗi khi push lên `main`
+- Image được push lên cả Docker Hub và GitHub Container Registry
 - Xem [DOCKER.md](DOCKER.md) để biết thêm chi tiết về Docker
+- Xem [DOCKER_HUB_SETUP.md](DOCKER_HUB_SETUP.md) để cấu hình Docker Hub
 
