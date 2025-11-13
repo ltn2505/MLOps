@@ -114,6 +114,25 @@
             cursor: not-allowed;
         }
         
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .btn-clear {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-group .btn {
+            margin-top: 0;
+            flex: 1;
+        }
+        
         .result {
             margin-top: 30px;
             padding: 20px;
@@ -257,7 +276,11 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn" id="submitBtn">Dự đoán</button>
+            <div class="btn-group">
+                <button type="submit" class="btn" id="submitBtn">Dự đoán</button>
+                <button type="button" class="btn btn-secondary" id="sampleBtn">Điền dữ liệu mẫu</button>
+                <button type="button" class="btn btn-clear" id="clearBtn">Xóa dữ liệu</button>
+            </div>
         </form>
         
         <div class="loading" id="loading">
@@ -274,7 +297,7 @@
         const loadingDiv = document.getElementById('loading');
         const submitBtn = document.getElementById('submitBtn');
         
-        // Lấy mẫu dữ liệu từ dữ liệu training (có thể thay đổi)
+        // Lấy mẫu dữ liệu từ dữ liệu training
         function fillSampleData() {
             const sampleFeatures = [
                 1.125, 1.178, 0.494, 0.791, -0.614,
@@ -286,15 +309,21 @@
             }
         }
         
-        // Thêm nút để điền dữ liệu mẫu
-        const sampleBtn = document.createElement('button');
-        sampleBtn.type = 'button';
-        sampleBtn.className = 'btn';
-        sampleBtn.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
-        sampleBtn.style.marginTop = '10px';
-        sampleBtn.textContent = 'Điền dữ liệu mẫu';
-        sampleBtn.onclick = fillSampleData;
-        form.appendChild(sampleBtn);
+        // Xóa tất cả dữ liệu
+        function clearData() {
+            for (let i = 0; i < 10; i++) {
+                document.getElementById(`feature_${i}`).value = '';
+            }
+            // Xóa kết quả cũ nếu có
+            resultDiv.classList.remove('show');
+        }
+        
+        // Gán sự kiện cho các nút
+        const sampleBtn = document.getElementById('sampleBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        
+        sampleBtn.addEventListener('click', fillSampleData);
+        clearBtn.addEventListener('click', clearData);
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();

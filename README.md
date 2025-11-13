@@ -206,14 +206,9 @@ docker pull ghcr.io/ltn2505/mlops:latest
 docker run -d -p 5000:5000 --name mlops-app ghcr.io/ltn2505/mlops:latest
 ```
 
-### Tại sao có nhiều tags?
+### Tags
 
-Workflow tự động tạo 3 tags cho mỗi image:
-- `latest`: Tag mới nhất (dễ sử dụng)
-- `main`: Tag theo branch name
-- `main-<SHA>`: Tag với commit SHA (để rollback)
-
-Tất cả đều trỏ đến cùng một image, không tốn thêm dung lượng.
+Workflow tạo tag `latest` cho mỗi image để đơn giản và dễ sử dụng.
 
 ## 🔧 Troubleshooting
 
