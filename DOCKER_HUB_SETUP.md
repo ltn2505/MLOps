@@ -14,6 +14,8 @@ Push Docker image lên **Docker Hub** để có thể pull và chạy trên bấ
 3. Xác nhận email
 4. Đăng nhập: https://hub.docker.com/login
 
+> **Lưu ý**: **KHÔNG CẦN** tạo repository trên Docker Hub trước. Docker Hub sẽ tự động tạo repository khi lần đầu push image lên.
+
 ## Bước 2: Tạo Access Token (Personal Access Token)
 
 ### Cách 1: Tạo token mới (Khuyến nghị)
@@ -65,12 +67,18 @@ Sau khi thêm secrets:
 
 ## Bước 5: Kiểm tra image trên Docker Hub
 
+Sau khi workflow chạy thành công (khoảng 2-5 phút):
+
 1. Truy cập: https://hub.docker.com/r/YOUR_USERNAME/mlops
    - Thay `YOUR_USERNAME` bằng username Docker Hub của bạn
+   - **Repository sẽ được tự động tạo** khi push image lần đầu
 2. Bạn sẽ thấy:
+   - Repository `mlops` đã được tạo tự động
    - Image `mlops:latest`
    - Tags khác nhau
    - Thời gian push
+
+> **Lưu ý**: Nếu repository chưa tồn tại, Docker Hub sẽ tự động tạo khi push image đầu tiên.
 
 ## Bước 6: Pull và chạy image từ Docker Hub
 
